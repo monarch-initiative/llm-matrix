@@ -1,0 +1,101 @@
+[tool.poetry]
+name = "llm_runner"
+version = "0.0.0"
+description = "llm_runner"
+authors = ["Author 1 <author@org.org>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+importlib-metadata = ">=8.2.0"
+pydantic = "*"
+llm = "*"
+pandas = "*"
+mlflow = "*"
+typer = "^0.12.5"
+duckdb = "^1.1.3"
+
+[tool.poetry.group.dev.dependencies]
+pytest = {version = ">=8.3.2"}
+tox = {version = ">=4.16.0"}
+mypy = {version = "*"}
+types-PyYAML = {version = "*"}
+jupyter = {version = "*"}
+papermill = {version = "*"}
+nbdime = {version = "*"}
+nbformat = {version = "*"}
+pre-commit = {version = ">=3.3.3"}
+mkdocs = "*"
+mkdocs-mermaid2-plugin = "*"
+mkdocstrings = {extras = ["crystal", "python"], version = "*"}
+mknotebooks = "^0.8.0"
+mkdocs-windmill = "*"
+mkdocs-material = "*"
+mkdocs-click = "*"
+mkdocs-with-pdf = "*"
+
+
+[tool.poetry.extras]
+tests = ["black", "ruff"]
+mlflow = ["mlflow"]
+
+
+[tool.poetry.scripts]
+llm-runner = "llm_runner.cli:app"
+
+[tool.poetry-dynamic-versioning]
+enable = true
+vcs = "git"
+style = "pep440"
+
+[tool.black]
+line-length = 120
+target-version = ["py38", "py39", "py310"]
+
+[tool.ruff]
+lint.extend-ignore = [
+    "D211",  # `no-blank-line-before-class`
+    "D212",  # `multi-line-summary-first-line`
+    "D203",  # `blank-line-before-docstring`
+    ]
+line-length = 120
+
+# Allow autofix for all enabled rules (when `--fix`) is provided.
+lint.fixable = ["ALL"]
+
+# Select or ignore from https://beta.ruff.rs/docs/rules/
+lint.select = [
+    "B",  # bugbear
+    "D",  # pydocstyle
+    "E",  # pycodestyle errors
+    "F",  # Pyflakes
+    "I",  # isort
+    "S",  # flake8-bandit
+    "W",  # Warning
+]
+
+lint.unfixable = []
+target-version = "py310"
+
+[tool.ruff.lint.mccabe]
+# Unlike Flake8, default to a complexity level of 10.
+max-complexity = 10
+
+[tool.codespell]
+skip = "*.po,*.ts,.git,pyproject.toml,*.ofn,*.owl,*.ttl"
+count = ""
+quiet-level = 3
+ignore-words-list = "fof,te,NotIn"
+
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
+build-backend = "poetry_dynamic_versioning.backend"
+
+[[tool.mypy.overrides]]
+module = "pyhornedowl.*"
+ignore_errors = true
+follow_imports = "skip"
+
+[tool.mypy]
+exclude = "owl"

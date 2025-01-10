@@ -1,0 +1,21 @@
+name: test
+template: binary_with_explanation
+templates:
+  binary_with_explanation:
+    system: Is the provided statement true? Return YES, NO, or OTHER, followed by an explanation.
+      The explanation can be of any form and length but your response must start with YES, NO, or OTHER.
+    prompt: "{input}"
+    metrics:
+      - qa_with_explanation
+matrix:
+  hyperparameters:
+    model: [gpt-4o, gpt-3.5-turbo]
+    temperature: [0.0, 2.0]
+cases:
+  - input: decyl palmitate is classified as a wax ester
+    ideal: YES. It is formed by the esterification of decyl alcohol and palmitic acid.
+    tags: [chemistry]
+  - input: "1 + 1 = 2"
+    ideal: "YES"
+    tags: [ arithmetic ]
+    
