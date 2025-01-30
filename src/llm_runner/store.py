@@ -2,13 +2,23 @@ import logging
 from dataclasses import dataclass
 from typing import Optional
 import duckdb
-from pathlib import Path
-from pydantic import BaseModel
 
 from llm_runner import TestCase
-from llm_runner.schema import TestCaseResult, Response
+from llm_runner.schema import TestCaseResult, Response, Suite
 
 logger = logging.getLogger(__name__)
+
+def unique_key(suite: Suite, case: TestCase, hyperparameters: dict) -> tuple:
+    """Generate a unique key for a test result."""
+    suite_name = suite.name
+    if suite.version:
+        suite_name += f"--{suite.version}"
+
+    def empty(v):
+        return v is None or (isinstance(v, (str, list, dict)) and not v)
+    return suite_name, case.input, {k: v for k, v in hyperparameters.items() if not empty(v)}
+
+
 
 @dataclass
 class Store:
@@ -16,12 +26,13 @@ class Store:
 
     Example:
 
-        >>> store = Store("cache.db")
+        >>> store = Store("test-cache.db")
         >>> case = TestCase(input="1+1")
+        >>> suite = Suite(name="test", cases=[case], matrix={"hyperparameters": {}})
         >>> response = Response(text="2")
         >>> result = TestCaseResult(case=case, response=response, hyperparameters={"model": "gpt-4"})
-        >>> store.add_result("test", result)
-        >>> cached = store.get_result("test", case, {"model": "gpt-4"})
+        >>> store.add_result(suite, result)
+        >>> cached = store.get_result(suite, case, {"model": "gpt-4"})
         >>> assert cached.response == response
     """
     db_path: str
@@ -34,29 +45,27 @@ class Store:
         self._conn.execute("""
             CREATE TABLE IF NOT EXISTS results (
                 suite_name VARCHAR,
-                test_case JSON,
+                test_case VARCHAR,
                 hyperparameters JSON,
                 result JSON,
                 PRIMARY KEY (suite_name, test_case, hyperparameters)
             )
         """)
 
-    def add_result(self, suite_name: str, result: TestCaseResult):
+    def add_result(self, suite: Suite, result: TestCaseResult):
         """Add a result to the store."""
         self._conn.execute("""
             INSERT OR REPLACE INTO results 
             (suite_name, test_case, hyperparameters, result)
             VALUES (?, ?, ?, ?)
         """, (
-            suite_name,
-            result.case.model_dump(exclude_unset=True),
-            result.hyperparameters,
+            *unique_key(suite, result.case, result.hyperparameters),
             result.model_dump(exclude_unset=True),
         ))
-        logger.debug(f"Added result for {suite_name} {result.case} {result.hyperparameters}")
+        logger.debug(f"Added result for {suite.name} {result.case} {result.hyperparameters}")
         self._conn.commit()
 
-    def get_result(self, suite_name: str, case: TestCase, hyperparameters: dict) -> Optional[TestCaseResult]:
+    def get_result(self, suite: Suite, case: TestCase, hyperparameters: dict) -> Optional[TestCaseResult]:
         """Get a result from the store."""
         result = self._conn.execute("""
             SELECT result
@@ -65,12 +74,10 @@ class Store:
             AND test_case = ?
             AND hyperparameters = ?
         """, (
-            suite_name,
-            case.model_dump(exclude_unset=True),
-            hyperparameters,
+            *unique_key(suite, case, hyperparameters),
         )).fetchone()
 
-        logger.debug(f"Present: {result is not None} when looking up {suite_name} {case} {hyperparameters}")
+        logger.debug(f"Present: {result is not None} when looking up {suite.name} {case} {hyperparameters}")
 
         if result:
             return TestCaseResult.model_validate_json(result[0])

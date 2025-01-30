@@ -1,0 +1,13 @@
+class_derivations:
+  Dataset:
+    populated_from: Dataset
+    slot_derivations:
+      relationships:
+        populated_from: relationships
+  TestCase:
+    populated_from: Relationship
+    slot_derivations:
+      input:
+        expr: "{subject_label} + ' ' + {object_label}"
+      original_input:
+        

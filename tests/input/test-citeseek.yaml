@@ -1,0 +1,23 @@
+name: test-citeseek
+template: binary_with_explanation
+models:
+  citeseek-gpt-4o:
+    plugins:
+      - citeseek
+    parameters:
+      model: gpt-4o
+templates:
+  binary_with_explanation:
+    system: Is the provided statement true? Return YES, NO, or OTHER, followed by an explanation.
+      The explanation can be of any form and length but your response must start with YES, NO, or OTHER.
+    prompt: "{input}"
+    metrics:
+      - qa_with_explanation
+matrix:
+  hyperparameters:
+    model: [citeseek-gpt-4o]
+cases:
+  - input: decyl palmitate is classified as a wax ester
+    ideal: YES. It is formed by the esterification of decyl alcohol and palmitic acid.
+    tags: [chemistry]
+    
