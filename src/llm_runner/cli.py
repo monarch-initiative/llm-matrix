@@ -184,6 +184,7 @@ def run(
         #df.describe().to_excel(output_directory / "summary.xlsx", index=True)
         df.describe().to_html(output_directory / "summary.html", index=True)
 
+        # by model
         grouped_by_model = df.groupby("model").aggregate(
             {"score": ["mean", "std", "max", "min", "count"]},
         )
@@ -191,6 +192,15 @@ def run(
         grouped_by_model.sort_values([("score", "mean")], ascending=False, inplace=True)
         print(grouped_by_model)
         grouped_by_model.to_csv(output_directory / "by_model.csv", index=False)
+
+        # by (model, ideal)
+        grouped_by_model_ideal = df.groupby(["model", "case_ideal"]).aggregate(
+            {"score": ["mean", "std", "max", "min", "count"]},
+        )
+        grouped_by_model_ideal.reset_index(inplace=True, drop=False, col_level=1)
+        grouped_by_model_ideal.sort_values([("score", "mean")], ascending=False, inplace=True)
+        print(grouped_by_model_ideal)
+        grouped_by_model_ideal.to_csv(output_directory / "by_model_ideal.csv", index=False)
 
 
         grouped_by_input = df.groupby("case_input").aggregate(

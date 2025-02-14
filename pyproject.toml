@@ -20,6 +20,8 @@ linkml-map = { version = "*", optional = true }
 typer = "^0.12.5"
 duckdb = "*"
 diskcache = "^5.6.3"
+requests-cache = "^1.2.1"
+jsonlines = "^4.0.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = {version = ">=8.3.2"}

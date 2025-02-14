@@ -16,7 +16,7 @@ def unique_key(suite: Suite, case: TestCase, hyperparameters: dict) -> tuple:
 
     def empty(v):
         return v is None or (isinstance(v, (str, list, dict)) and not v)
-    return suite_name, case.input, {k: v for k, v in hyperparameters.items() if not empty(v)}
+    return suite_name, case.input, case.ideal or "", {k: v for k, v in hyperparameters.items() if not empty(v)}
 
 
 
@@ -27,7 +27,7 @@ class Store:
     Example:
 
         >>> store = Store("test-cache.db")
-        >>> case = TestCase(input="1+1")
+        >>> case = TestCase(input="1+1", ideal="2")
         >>> suite = Suite(name="test", cases=[case], matrix={"hyperparameters": {}})
         >>> response = Response(text="2")
         >>> result = TestCaseResult(case=case, response=response, hyperparameters={"model": "gpt-4"})
@@ -46,9 +46,10 @@ class Store:
             CREATE TABLE IF NOT EXISTS results (
                 suite_name VARCHAR,
                 test_case VARCHAR,
+                ideal VARCHAR,
                 hyperparameters JSON,
                 result JSON,
-                PRIMARY KEY (suite_name, test_case, hyperparameters)
+                PRIMARY KEY (suite_name, test_case, ideal, hyperparameters)
             )
         """)
 
@@ -56,11 +57,11 @@ class Store:
         """Add a result to the store."""
         self._conn.execute("""
             INSERT OR REPLACE INTO results 
-            (suite_name, test_case, hyperparameters, result)
-            VALUES (?, ?, ?, ?)
+            (suite_name, test_case, ideal, hyperparameters, result)
+            VALUES (?, ?, ?, ?, ?)
         """, (
             *unique_key(suite, result.case, result.hyperparameters),
-            result.model_dump(exclude_unset=True),
+            result.model_dump_json(exclude_unset=True),
         ))
         logger.debug(f"Added result for {suite.name} {result.case} {result.hyperparameters}")
         self._conn.commit()
@@ -72,6 +73,7 @@ class Store:
             FROM results
             WHERE suite_name = ?
             AND test_case = ?
+            AND ideal = ?
             AND hyperparameters = ?
         """, (
             *unique_key(suite, case, hyperparameters),
@@ -82,6 +84,11 @@ class Store:
         if result:
             return TestCaseResult.model_validate_json(result[0])
         return None
+
+    @property
+    def size(self) -> int:
+        """Get the number of results in the store."""
+        return self._conn.execute("SELECT COUNT(*) FROM results").fetchone()[0]
 
     def __del__(self):
         """Close the database connection when the object is destroyed."""

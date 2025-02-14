@@ -54,6 +54,8 @@ class MetricEnum(Enum):
     SIMPLE_QUESTION = "simple_question"
     LIST_MEMBERSHIP = "list_membership"
     RANKED_LIST = "ranked_list"
+    NARRATIVE_SIMILARITY = "narrative_similarity"
+    REVIEW = "review"
     BLEU = "bleu"
     ROUGE = "rouge"
     METEOR = "meteor"

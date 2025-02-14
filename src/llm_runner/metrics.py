@@ -50,7 +50,8 @@ def evaluate_result(result: TestCaseResult, runner: Optional[LLMRunner] = None):
         if m == MetricEnum.QA_WITH_EXPLANATION.value:
             # first token regex
             pattern = re.compile(r"^(\w+)")
-            actual_answer = pattern.match(actual_output).group(1).upper()
+            match = pattern.match(actual_output)
+            actual_answer = match.group(1).upper() if match else "OTHER"
             expected_answer = pattern.match(expected_output).group(1).upper()
             if actual_answer == expected_answer:
                 score = 1.0
@@ -80,6 +81,28 @@ def evaluate_result(result: TestCaseResult, runner: Optional[LLMRunner] = None):
                 user_input=(
                     f"The expected list is: {expected_output}. "
                     f"The text: {actual_output}. "
+                ),
+            )
+            eval_response_text = eval_response.text.strip()
+            result.evaluation_message = eval_response_text
+            # use a regex
+            pattern = re.compile(r"(\d+(\.\d+)?)")
+            matches = pattern.match(eval_response_text)
+            if matches:
+                scores.append(float(pattern.match(eval_response_text).group(1)))
+            else:
+                raise ValueError(f"Could not parse score from {eval_response_text}")
+        elif m == MetricEnum.REVIEW.value:
+            # result.case.input
+            eval_response = eval_model.prompt(
+                system_prompt=(
+                    "Review the output for correctness, completeness, and clarity. "
+                    "The response should be a score between 0 (worst) and 1 (best). "
+                    "Your response should be the score followed by any explanatory text. "
+                    "For example, '0.3 The response has many inaccuracies'. "
+                ),
+                user_input=(
+                    f"The output to score is: {actual_output}. "
                 ),
             )
             eval_response_text = eval_response.text.strip()
