@@ -3,8 +3,8 @@ from dataclasses import dataclass
 from typing import Optional
 import duckdb
 
-from llm_evaluator import TestCase
-from llm_evaluator.schema import TestCaseResult, Response, Suite
+from llm_matrix import TestCase
+from llm_matrix.schema import TestCaseResult, Response, Suite
 
 logger = logging.getLogger(__name__)
 

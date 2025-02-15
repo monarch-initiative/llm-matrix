@@ -5,8 +5,8 @@ import llm
 from IPython.core.debugger import prompt
 from pydantic import ConfigDict, Field
 
-from llm_evaluator import TestCase
-from llm_evaluator.schema import StrictBaseModel, Template, Response
+from llm_matrix import TestCase
+from llm_matrix.schema import StrictBaseModel, Template, Response
 
 logger = logging.getLogger(__name__)
 
@@ -20,14 +20,14 @@ class AIModel(StrictBaseModel):
 
     Example:
 
-        >>> from llm_evaluator import AIModel
+        >>> from llm_matrix import AIModel
         >>> model = AIModel(parameters={"model": "gpt-4o"})
         >>> response = model.prompt("What is 1+1?")
         >>> assert "2" in response.text
 
     With a template
 
-        >>> from llm_evaluator import AIModel, Template
+        >>> from llm_matrix import AIModel, Template
         >>> template = Template(
         ...     system="Answer the question with a single number, no other text",
         ...     prompt="What is the value of {input}?",

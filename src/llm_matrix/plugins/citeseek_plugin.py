@@ -3,8 +3,8 @@ import subprocess
 from typing import Optional
 
 
-from llm_evaluator import AIModel, Template
-from llm_evaluator.schema import Response
+from llm_matrix import AIModel, Template
+from llm_matrix.schema import Response
 
 EXTRA_SYSTEM = """
 When forming your response, make use of any relevant information from the abstracts below.

@@ -1,8 +1,8 @@
 import re
 from typing import Optional
 
-from llm_evaluator import TestCase, LLMRunner
-from llm_evaluator.schema import TestCaseResult, MetricEnum, Response
+from llm_matrix import TestCase, LLMRunner
+from llm_matrix.schema import TestCaseResult, MetricEnum, Response
 
 DEFAULT_EVALUATION_MODEL_NAME = "gpt-4o"
 

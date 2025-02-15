@@ -24,9 +24,9 @@ import typer
 import yaml
 from typer.main import get_command
 
-from llm_evaluator import LLMRunner
-from llm_evaluator.runner import LLMRunnerConfig
-from llm_evaluator.schema import results_to_dataframe, load_suite
+from llm_matrix import LLMRunner
+from llm_matrix.runner import LLMRunnerConfig
+from llm_matrix.schema import results_to_dataframe, load_suite
 
 logger = logging.getLogger()
 
