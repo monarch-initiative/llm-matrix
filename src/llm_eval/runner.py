@@ -5,10 +5,10 @@ from itertools import product
 from pathlib import Path
 from typing import Dict, Any, Optional, Iterator, List
 
-from llm_runner import Suite, Matrix, AIModel, Template, TestCase
-from llm_runner.schema import TestCaseResult, StrictBaseModel
-from llm_runner.store import Store
-from llm_runner.utils import iter_hyperparameters
+from llm_eval import Suite, Matrix, AIModel, Template, TestCase
+from llm_eval.schema import TestCaseResult, StrictBaseModel
+from llm_eval.store import Store
+from llm_eval.utils import iter_hyperparameters
 
 logger = logging.getLogger(__name__)
 
@@ -68,7 +68,7 @@ class LLMRunner:
             hyperparameters=params,
             metrics=template.metrics,
         )
-        from llm_runner.metrics import evaluate_result
+        from llm_eval.metrics import evaluate_result
         evaluate_result(result, runner=self)
         store.add_result(suite, result)
         return result
@@ -95,7 +95,7 @@ class LLMRunner:
                     plugins = model_info.plugins or []
                     # TODO: proper mechanism for plugins
                     if "citeseek" in plugins:
-                        from llm_runner.plugins.citeseek_plugin import CiteseekPlugin
+                        from llm_eval.plugins.citeseek_plugin import CiteseekPlugin
                         self._aimodels[key] = CiteseekPlugin(parameters=params)
             if key not in self._aimodels:
                 self._aimodels[key] = AIModel(parameters=params)

@@ -3,8 +3,8 @@ from copy import deepcopy
 
 import pytest
 from databricks.sdk.retries import retried
-from llm_runner.store import Store
-from llm_runner.schema import TestCaseResult, Response, Suite, TestCase
+from llm_eval.store import Store
+from llm_eval.schema import TestCaseResult, Response, Suite, TestCase
 
 from tests.conftest import INPUT_DIR
 

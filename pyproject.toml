@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "llm_runner"
+name = "llm_eval"
 version = "0.0.0"
-description = "llm_runner"
+description = "llm_eval"
 authors = ["Author 1 <author@org.org>"]
 license = "MIT"
 readme = "README.md"
@@ -52,7 +52,7 @@ map = ["linkml-map"]
 
 
 [tool.poetry.scripts]
-llm-runner = "llm_runner.cli:app"
+llm-eval = "llm_eval.cli:app"
 
 [tool.poetry-dynamic-versioning]
 enable = true

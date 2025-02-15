@@ -1,6 +1,6 @@
 from itertools import product
 
-from llm_runner import Matrix
+from llm_eval import Matrix
 
 
 def iter_hyperparameters(matrix: Matrix):

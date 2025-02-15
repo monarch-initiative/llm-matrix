@@ -1,6 +1,6 @@
 import pytest
 
-from llm_runner import load_suite, Suite
+from llm_eval import load_suite, Suite
 from tests.conftest import INPUT_DIR
 
 

@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from llm_runner import load_suite, Suite, LLMRunner
+from llm_eval import load_suite, Suite, LLMRunner
 from tests.conftest import INPUT_DIR, STORE_PATH
 
 
