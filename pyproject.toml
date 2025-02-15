@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "llm_eval"
+name = "llm_matrix"
 version = "0.0.0"
-description = "llm_eval"
+description = "llm_matrix"
 authors = ["Author 1 <author@org.org>"]
 license = "MIT"
 readme = "README.md"
@@ -52,7 +52,7 @@ map = ["linkml-map"]
 
 
 [tool.poetry.scripts]
-llm-eval = "llm_eval.cli:app"
+llm-matrix = "llm_matrix.cli:app"
 
 [tool.poetry-dynamic-versioning]
 enable = true
