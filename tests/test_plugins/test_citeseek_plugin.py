@@ -2,8 +2,8 @@ from pathlib import Path
 
 import pytest
 
-from llm_eval import load_suite, LLMRunner
-from llm_eval.plugins.citeseek_plugin import CiteseekPlugin
+from llm_evaluator import load_suite, LLMRunner
+from llm_evaluator.plugins.citeseek_plugin import CiteseekPlugin
 from tests.conftest import INPUT_DIR
 
 
