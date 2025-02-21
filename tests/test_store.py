@@ -1,5 +1,7 @@
 import json
 from copy import deepcopy
+from pathlib import Path
+from typing import Union, Optional
 
 import pytest
 from databricks.sdk.retries import retried
@@ -28,9 +30,13 @@ from tests.conftest import INPUT_DIR
     ("1+3", "4"),
     ("open-ended", None),
 ])
-def test_store(original_input: dict, input_text, ideal: str):
-    path = INPUT_DIR / "test-cache.db"
-    path.unlink(missing_ok=True)
+@pytest.mark.parametrize("path", [
+    INPUT_DIR / "test-cache.db",
+    None,
+])
+def test_store(original_input: dict, input_text, ideal: str, path: Optional[Union[str, Path]]):
+    if path:
+        path.unlink(missing_ok=True)
     store = Store(path)
     assert store.size == 0
     case1 = TestCase(input=input_text, ideal=ideal, original_input=original_input)

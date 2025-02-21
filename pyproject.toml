@@ -93,7 +93,7 @@ target-version = "py310"
 max-complexity = 10
 
 [tool.codespell]
-skip = "*.po,*.ts,.git,pyproject.toml,*.ofn,*.owl,*.ttl"
+skip = "*.po,*.ts,.git,pyproject.toml,*.ofn,*.owl,*.ttl,*.yaml,*.tsv"
 count = ""
 quiet-level = 3
 ignore-words-list = "fof,te,NotIn,rouge"

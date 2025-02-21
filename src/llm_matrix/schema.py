@@ -74,7 +74,7 @@ class Template(StrictBaseModel):
     Template for generating prompts to the AI model.
     """
     system: Optional[FormatString] = Field(None, description="System prompt")
-    prompt: FormatString = Field(..., description="Prompt format strting to the model")
+    prompt: Optional[FormatString] = Field(None, description="Prompt format string to the model")
     metrics: Optional[List[Metric]] = Field(None, description="Metrics to be evaluated")
 
 class Matrix(StrictBaseModel):

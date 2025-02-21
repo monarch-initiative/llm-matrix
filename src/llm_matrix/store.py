@@ -34,13 +34,18 @@ class Store:
         >>> store.add_result(suite, result)
         >>> cached = store.get_result(suite, case, {"model": "gpt-4"})
         >>> assert cached.response == response
+
+    To use an in-memory database, pass `None` as the `db_path`:
+
+        >>> store = Store(None)
+
     """
-    db_path: str
+    db_path: Optional[str] = None
     _conn: Optional[duckdb.DuckDBPyConnection] = None
 
     def __post_init__(self):
         """Initialize the database connection and create the table if it doesn't exist."""
-        self._conn = duckdb.connect(str(self.db_path))
+        self._conn = duckdb.connect(str(self.db_path) if self.db_path else ":memory:")
         # Using JSON type for storing Pydantic models and hyperparameters
         self._conn.execute("""
             CREATE TABLE IF NOT EXISTS results (

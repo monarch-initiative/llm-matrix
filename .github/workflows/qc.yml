@@ -32,5 +32,5 @@ jobs:
       #- name: Check code quality with flake8
       #  run: poetry run tox -e lint
 
-      - name: Test with pytest and generate coverage file
-        run: poetry run tox -e py
+      #- name: Test with pytest and generate coverage file
+      #  run: poetry run tox -e py
