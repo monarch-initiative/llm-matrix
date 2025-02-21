@@ -66,7 +66,7 @@ class LLMRunner:
             case=case,
             response=response,
             hyperparameters=params,
-            metrics=template.metrics,
+            metrics=template.metrics if template else None,
         )
         from llm_matrix.metrics import evaluate_result
         evaluate_result(result, runner=self)

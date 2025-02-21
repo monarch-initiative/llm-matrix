@@ -44,7 +44,7 @@ class AIModel(StrictBaseModel):
     llm_model: Optional[llm.Model] = Field(None, description="The LLM model")
 
     def _prompt_parameters(self):
-        return {k: v for k, v in self.parameters.items() if k not in RESERVED}
+        return {k: v for k, v in self.parameters.items() if k not in RESERVED and v is not None}
 
     @property
     def ensure_llm_model(self) -> llm.Model:

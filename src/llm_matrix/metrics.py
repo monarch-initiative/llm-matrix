@@ -46,7 +46,7 @@ def evaluate_result(result: TestCaseResult, runner: Optional[LLMRunner] = None):
 
     # TODO: use plugin mechanism
     scores = []
-    for m in result.metrics:
+    for m in result.metrics or []:
         if m == MetricEnum.QA_WITH_EXPLANATION.value:
             # first token regex
             pattern = re.compile(r"^(\w+)")
