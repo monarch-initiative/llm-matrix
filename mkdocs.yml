@@ -1,8 +1,14 @@
-site_name: "llm-runner"
+site_name: "LLM Matrix"
 theme:
   name: material
   features:
     - content.tabs.link
+    - navigation.sections
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
   palette:
     # Light mode
     - media: "(prefers-color-scheme: light)"
@@ -53,9 +59,24 @@ markdown_extensions:
           format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.tabbed:
       alternate_style: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.details
+  - tables
+  - footnotes
+  - attr_list
 nav:
   - Home: index.md
-  - Tutorial:
-     - 1. First program: tutorial/01-first-program
-site_url: https://llm-runner.github.io/llm-runner/
-repo_url: https://github.com/llm-runner/llm-runner/
+  - Getting Started:
+    - Tutorial: tutorial/index.md
+  - User Guide:
+    - Configuration: configuration/index.md
+    - Metrics: metrics/index.md
+    - Command Line Interface: cli.md
+  - API Reference: api/index.md
+  - Development:
+    - Contributing: contributing.md
+site_url: https://monarch-initiative.github.io/llm-matrix/
+repo_url: https://github.com/monarch-initiative/llm-matrix/
