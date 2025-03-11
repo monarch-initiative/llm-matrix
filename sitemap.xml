@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://monarch-initiative.github.io/llm-matrix/</loc>
+         <lastmod>2025-03-11</lastmod>
+    </url>
+    <url>
+         <loc>https://monarch-initiative.github.io/llm-matrix/cli/</loc>
+         <lastmod>2025-03-11</lastmod>
+    </url>
+    <url>
+         <loc>https://monarch-initiative.github.io/llm-matrix/contributing/</loc>
+         <lastmod>2025-03-11</lastmod>
+    </url>
+    <url>
+         <loc>https://monarch-initiative.github.io/llm-matrix/api/</loc>
+         <lastmod>2025-03-11</lastmod>
+    </url>
+    <url>
+         <loc>https://monarch-initiative.github.io/llm-matrix/configuration/</loc>
+         <lastmod>2025-03-11</lastmod>
+    </url>
+    <url>
+         <loc>https://monarch-initiative.github.io/llm-matrix/metrics/</loc>
+         <lastmod>2025-03-11</lastmod>
+    </url>
+    <url>
+         <loc>https://monarch-initiative.github.io/llm-matrix/tutorial/</loc>
+         <lastmod>2025-03-11</lastmod>
+    </url>
+</urlset>
